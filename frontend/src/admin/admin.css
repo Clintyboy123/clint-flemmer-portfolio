@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/*
+  Admin design tokens. Every colour, size and easing used in the admin is named here once;
+  components use the utilities these create (text-ink, bg-soft, text-section, ease-out-soft ...).
+  Spacing is Tailwind's default 4px unit, used in steps of 8px (2, 4, 6, 8, 12, 16 ...).
+*/
+@theme {
+  --font-sans: "Urbanist Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #101010;
+  --color-muted: #5e5e5e;
+  --color-line: #e6e6e3;
+  --color-soft: #f6f6f4;
+  --color-paper: #ffffff;
+  --color-accent: #f21e4e;
+  --color-success: #067647;
+  --color-danger: #b42318;
+
+  /* Type scale: label (eyebrows), meta, ui, body, lead, section, title. */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1rem;
+  --text-meta: 0.875rem;
+  --text-meta--line-height: 1.375rem;
+  --text-ui: 0.9375rem;
+  --text-ui--line-height: 1.5rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625rem;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.75rem;
+  --text-section: 1.375rem;
+  --text-section--line-height: 1.75rem;
+  --text-heading: 2rem;
+  --text-heading--line-height: 1.15;
+  --text-title: 2.5rem;
+  --text-title--line-height: 1.1;
+
+  --tracking-label: 0.2em;
+  --tracking-heading: -0.02em;
+
+  /* One easing for the admin, shared with Motion in src/admin/motion.js. */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper font-sans text-body text-ink antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+}
