@@ -12,8 +12,9 @@
 #   DEPLOY_SSH_KEY   private key for that user (ed25519 recommended)
 #   DEPLOY_PATH      folder on the server holding this site, e.g. /srv/clint-flemmer-portfolio
 #   DEPLOY_PORT      optional, SSH port (defaults to 22)
-# Repository variable (optional):
-#   SITE_URL         e.g. https://clintflemmer.co.za (linked on the deployment and checked after deploying)
+# Repository variables:
+#   DEPLOY_ENABLED   "true" to switch deploying on. Leave it unset until the server is ready.
+#   SITE_URL         optional, e.g. https://clintflemmer.co.za (linked on the deployment and checked after deploying)
 #
 # One-time server setup is in techstack.md ("Deployment"). In short: create DEPLOY_PATH with a filled-in .env,
 # and log the server in to GHCR once (docker login ghcr.io with a token that has read:packages).
@@ -119,6 +120,10 @@ jobs:
   deploy:
     name: Deploy to the VPS
     needs: image
+    # Switched off until the server is ready: set the repository variable DEPLOY_ENABLED to "true"
+    # (Settings → Secrets and variables → Actions → Variables) once the secrets below and the VPS are set up.
+    # Until then this job is skipped and runs stay green.
+    if: vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:

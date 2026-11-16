@@ -298,7 +298,9 @@ push to main
 4. check      (GitHub's machine): the live site and /api/health answer (when SITE_URL is set)
 ```
 
-Pull requests only run step 1, so you see whether a change is safe before merging it. Dependabot opens weekly pull
+Step 3 only runs once the repository variable `DEPLOY_ENABLED` is `true` (see "One-time setup"); until then
+pushes test and build images, and the deploy is skipped. Pull requests only run step 1, so you see whether a change
+is safe before merging it. Dependabot opens weekly pull
 requests for package updates, and each one goes through the same test.
 
 ### Why images and not source code on the server
@@ -343,7 +345,7 @@ git remote add origin git@github.com:<you>/clint-flemmer-portfolio.git && git pu
 | `DEPLOY_PATH` | The site's folder on the VPS, e.g. `/srv/clint-flemmer-portfolio` |
 | `DEPLOY_PORT` | Optional: the SSH port, if it isn't 22 |
 
-Optional **variable** (same page, Variables tab): `SITE_URL`, e.g. `https://clintflemmer.co.za`. With it set, each
+**Variables** (same page, Variables tab): `DEPLOY_ENABLED` (see step 4) and, optionally, `SITE_URL`, e.g. `https://clintflemmer.co.za`. With it set, each
 deployment links to the site and checks it answers.
 
 If you use the same deploy user and key as your other sites, the first four values are the same as theirs, apart
@@ -374,7 +376,13 @@ echo "<token>" | docker login ghcr.io -u <github-username> --password-stdin
 Add the site to the VPS Nginx using the server block in [README.md](README.md) ("VPS Nginx"), pointing at
 `http://127.0.0.1:<FRONTEND_PORT>`, issue the certificate the way you do for your other sites, and reload Nginx.
 
-**4. First deploy**
+**4. Switch deploying on**
+
+Deploying is off until you turn it on, so pushes made before the server was ready stayed green. On GitHub go to
+the repo → Settings → Secrets and variables → Actions → **Variables**, and add `DEPLOY_ENABLED` with the value `true`.
+To pause deploys later (for example while working on the server), set it to `false`.
+
+**5. First deploy**
 
 Push to `main` (or run the workflow by hand: Actions → CI/CD → Run workflow). The first start creates the
 database, runs the migrations, loads the starting content and creates your admin account. Then sign in at
